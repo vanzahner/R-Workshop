@@ -3,8 +3,8 @@ title: "R Workshop"
 author: "Vanessa"
 date: '2019-01-21'
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ## Creating Objects in R
@@ -293,7 +293,8 @@ spread() takes three principle arguments:
 
 We're going to use the surveys dataset
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
 library(here)
 
 surveys <- read_csv(here("read_data", "surveys.csv"))
@@ -341,7 +342,7 @@ long_surveys <- wide_surveys_gw %>%
 * Create a data dictionary to define our variables
 
 ```{r}
-tidygsi <- read_csv(here("write_data", "tidy_gsi.csv"))
+tidy_gsi <- read_csv(here("write_data", "tidy_gsi.csv"))
 #noticed an error because comment in column wasn't deleted and created NA's
 ```
 
@@ -357,3 +358,165 @@ But I think it's fixed now. Create Github project then upload local files there.
 
 Switched to data_wrangling script to import data into our read_data file.
 
+We have chla data, fish data, and sockeye stock id data. Let's start to analyze these datasets.
+
+```{r}
+fish <- read_csv(here("read_data", "fish.csv"))
+chla <- read_csv(here("read_data", "chla.csv"))
+tidy_gsi <- read_csv(here("write_data", "tidy_gsi.csv"))
+```
+
+```{r}
+fish %>%
+  count(species)
+
+fish %>%
+  group_by(site_id) %>%
+  count(species)
+
+fish_d09 <- fish %>%
+  filter(site_id=="D09") %>%
+  select(hakai_id, jsp_survey_id, seine_id, date,
+         species, site_id, fork_length, weight) %>%
+  mutate(k=(10^5*weight)/fork_length^3) %>%
+  drop_na(k)
+#fulton's condition factor calculation
+```
+
+## Factors
+
+read_csv() reads words in as characters so you can determine what are factors
+read.csv() reads words in as factors as default, not ideal.
+
+```{r}
+str(fish_d09)
+
+class(fish_d09$species)
+
+#coerce a column to be a factor, do this:
+
+fish_d09$species <- factor(fish_d09$species)
+
+class(fish_d09$species)
+
+levels(fish_d09$species)
+```
+
+If you have factors that are numbers, don't try to do math with those factors. Under the hood R will be treating your factor levels as a different number. Gets messy.
+
+Ask a question about most effectively/quickly releveling the order of factors?
+
+## Dates
+
+read_csv() treats ISO date standards (yyyy-mm-dd) as a DATE object
+read.csv() treats them as characters: not ideal.
+
+Lubridate is a package for dealing with dates.
+
+```{r}
+library(lubridate)
+
+#extract date components
+fish_d09 <- fish_d09 %>%
+  mutate(year=year(date),
+         month=month(date),
+         week=week(date),
+         yday=yday(date))
+#very helpful library! use yday when comparing dates between years
+```
+
+Lubridate: you can do math with dates
+
+* periods
+* intervals
+* durations
+
+# Joining Data
+
+Data we have:
+
+* chla
+* tidy_gsi
+* fish_d09
+
+```{r}
+left_join(fish_d09, tidy_gsi, by="hakai_id")
+
+right_join(fish_d09, tidy_gsi, by="hakai_id")
+
+anti_join(fish_d09, tidy_gsi, by="hakai_id")
+
+so_gsi <- inner_join(fish_d09, tidy_gsi, by="hakai_id")
+```
+
+## ggplot2
+
+To build a ggplot:
+
+ggplot(data=DATA, mapping=aes(MAPPINGS))
+  + GEOM_FUNCTION()
+
+```{r, eval=FALSE}
+#example
+ggplot(data=surveys, mapping = aes(species_id, weight))+
+  geom_point()
+```
+
+```{r}
+ggplot(so_gsi, aes())+
+  geom_point(aes(x=yday, y=fork_length))+
+  geom_smooth(aes(x=yday, y=fork_length), method = lm)+
+  theme_classic()+
+  facet_wrap(~stock_1)
+```
+
+Cookbook for R
+
+How to adjust legends, make facets, adjust axes
+
+http://cookbook-r.com/Graphs
+
+Geom list:
+
+https://ggplot2.tidyverse.org/reference/
+
+```{r}
+chla <- chla %>%
+  mutate(year=year(date),
+         month=month(date),
+         week=week(date),
+         yday=yday(date))
+#separate date variables from main date column, same as so_gsi
+```
+
+```{r}
+chla_so_gsi <- inner_join(so_gsi, chla, by=c("date", "week", "year",
+                                             "month", "yday"))
+#didn't work
+```
+
+```{r}
+ggplot(chla, aes())+
+  geom_line(aes(x=yday, y=chla_final))+
+  theme_classic()+
+  facet_wrap(~year)
+
+library(cowplot)
+
+min(so_gsi$yday)
+max(so_gsi$yday)
+
+a <- chla %>%
+  filter(year==2015) %>%
+  ggplot()+
+  geom_point(aes(x=yday, y=chla_final))+
+  theme_classic()+
+  scale_x_continuous(limits=c(140, 178))
+
+b <- ggplot(so_gsi, aes())+
+  geom_point(aes(x=yday, y=k))+
+  theme_classic()
+
+plot_grid(a, b, nrow=2)
+#comparing chlorophyll in 2015 to fish condition (2015)
+```
