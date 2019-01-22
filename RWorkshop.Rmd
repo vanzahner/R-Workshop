@@ -3,8 +3,8 @@ title: "R Workshop"
 author: "Vanessa"
 date: '2019-01-21'
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ## Creating Objects in R
@@ -347,3 +347,7 @@ tidygsi <- read_csv(here("write_data", "tidy_gsi.csv"))
 ```
 
 To sync with GitHub: commit then pull then push (not pull then commit then push?)
+
+Having trouble connecting github and local computer when project created locally...
+
+But I think it's fixed now. Create Github project then upload local files there.

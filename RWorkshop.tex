@@ -294,7 +294,7 @@ Next we're going to look at the structure of Data Frames.
 \end{Shaded}
 
 \begin{verbatim}
-## -- Attaching packages -------------------------------------------------- tidyverse 1.2.1 --
+## -- Attaching packages ------------------------------------------------- tidyverse 1.2.1 --
 \end{verbatim}
 
 \begin{verbatim}
@@ -305,7 +305,7 @@ Next we're going to look at the structure of Data Frames.
 \end{verbatim}
 
 \begin{verbatim}
-## -- Conflicts ----------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ---------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 \end{verbatim}
@@ -1127,6 +1127,68 @@ gather() takes four arugments:
 \StringTok{  }\KeywordTok{gather}\NormalTok{(}\DataTypeTok{key=}\NormalTok{species_id, }\DataTypeTok{value=}\NormalTok{mean_weight)}
 \end{Highlighting}
 \end{Shaded}
+
+\subsection{Sending Tidy Data}\label{sending-tidy-data}
+
+\subsubsection{Changelog}\label{changelog}
+
+\begin{itemize}
+\tightlist
+\item
+  Update your changelog with changes you make to your raw data or other
+  significant changes or additions to your projects!
+\end{itemize}
+
+\subsubsection{Data Dictionary}\label{data-dictionary}
+
+\begin{itemize}
+\tightlist
+\item
+  Create a data dictionary to define our variables
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tidygsi <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\KeywordTok{here}\NormalTok{(}\StringTok{"write_data"}\NormalTok{, }\StringTok{"tidy_gsi.csv"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   hakai_id = col_character(),
+##   stock_1 = col_character(),
+##   region_1 = col_integer(),
+##   prob_1 = col_double(),
+##   stock_2 = col_character(),
+##   region_2 = col_integer(),
+##   prob_2 = col_double(),
+##   stock_3 = col_character(),
+##   region_3 = col_integer(),
+##   prob_3 = col_double(),
+##   stock_4 = col_character(),
+##   region_4 = col_integer(),
+##   prob_4 = col_double(),
+##   stock_5 = col_character(),
+##   region_5 = col_integer(),
+##   prob_5 = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#noticed an error because comment in column wasn't deleted and created NA's}
+\end{Highlighting}
+\end{Shaded}
+
+To sync with GitHub: commit then pull then push (not pull then commit
+then push?)
+
+Having trouble connecting github and local computer when project created
+locally\ldots{}
+
+But I think it's fixed now. Create Github project then upload local
+files there.
 
 
 \end{document}

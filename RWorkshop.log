@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  22 JAN 2019 10:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  22 JAN 2019 11:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -637,9 +637,9 @@ LaTeX Font Info:    Try loading font information for TS1+lmr on input line 257.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-Overfull \hbox (23.74355pt too wide) in paragraph at lines 298--298
+Overfull \hbox (18.49356pt too wide) in paragraph at lines 298--298
 []\T1/lmtt/m/n/10 ## -- Attaching packages ------------------------------------
--------------- tidyverse 1.2.1 --[] 
+------------- tidyverse 1.2.1 --[] 
  []
 
 

@@ -186,12 +186,12 @@ animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;)</code></pre
 <h2>Data Frames</h2>
 <p>Next we’re going to look at the structure of Data Frames.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 2.2.1     ✔ purrr   0.2.5
 ## ✔ tibble  1.4.2     ✔ dplyr   0.7.5
 ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
 ## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>download.file(url=&quot;https://ndownloader.figshare.com/files/2292169&quot;, destfile = &quot;read_data/portal_data_joined.csv&quot;)
@@ -701,6 +701,45 @@ wide_surveys_gw &lt;- surveys_gw %&gt;%
 </ol>
 <pre class="r"><code>long_surveys &lt;- wide_surveys_gw %&gt;%
   gather(key=species_id, value=mean_weight)</code></pre>
+</div>
+</div>
+<div id="sending-tidy-data" class="section level2">
+<h2>Sending Tidy Data</h2>
+<div id="changelog" class="section level3">
+<h3>Changelog</h3>
+<ul>
+<li>Update your changelog with changes you make to your raw data or other significant changes or additions to your projects!</li>
+</ul>
+</div>
+<div id="data-dictionary" class="section level3">
+<h3>Data Dictionary</h3>
+<ul>
+<li>Create a data dictionary to define our variables</li>
+</ul>
+<pre class="r"><code>tidygsi &lt;- read_csv(here(&quot;write_data&quot;, &quot;tidy_gsi.csv&quot;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   hakai_id = col_character(),
+##   stock_1 = col_character(),
+##   region_1 = col_integer(),
+##   prob_1 = col_double(),
+##   stock_2 = col_character(),
+##   region_2 = col_integer(),
+##   prob_2 = col_double(),
+##   stock_3 = col_character(),
+##   region_3 = col_integer(),
+##   prob_3 = col_double(),
+##   stock_4 = col_character(),
+##   region_4 = col_integer(),
+##   prob_4 = col_double(),
+##   stock_5 = col_character(),
+##   region_5 = col_integer(),
+##   prob_5 = col_double()
+## )</code></pre>
+<pre class="r"><code>#noticed an error because comment in column wasn't deleted and created NA's</code></pre>
+<p>To sync with GitHub: commit then pull then push (not pull then commit then push?)</p>
+<p>Having trouble connecting github and local computer when project created locally…</p>
+<p>But I think it’s fixed now. Create Github project then upload local files there.</p>
 </div>
 </div>
 </div>
