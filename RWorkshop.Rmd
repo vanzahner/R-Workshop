@@ -342,6 +342,8 @@ long_surveys <- wide_surveys_gw %>%
 * Create a data dictionary to define our variables
 
 ```{r}
-
+tidygsi <- read_csv(here("write_data", "tidy_gsi.csv"))
+#noticed an error because comment in column wasn't deleted and created NA's
 ```
 
+To sync with GitHub: commit then pull then push (not pull then commit then push?)
