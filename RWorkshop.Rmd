@@ -3,8 +3,8 @@ title: "R Workshop"
 author: "Vanessa"
 date: '2019-01-21'
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ## Creating Objects in R
@@ -78,7 +78,7 @@ Often you want to convert lists and matrices to data frames or vectors.
 
 Next we're going to look at the structure of Data Frames.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 
 download.file(url="https://ndownloader.figshare.com/files/2292169", destfile = "read_data/portal_data_joined.csv")
@@ -294,7 +294,6 @@ spread() takes three principle arguments:
 We're going to use the surveys dataset
 
 ```{r}
-library(tidyverse)
 library(here)
 
 surveys <- read_csv(here("read_data", "surveys.csv"))
