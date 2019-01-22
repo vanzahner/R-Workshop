@@ -184,7 +184,7 @@ animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;)</code></pre
 </div>
 <div id="data-frames" class="section level2">
 <h2>Data Frames</h2>
-<p>Next we;re going to look at the structure of Data Frames.</p>
+<p>Next we’re going to look at the structure of Data Frames.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 2.2.1     ✔ purrr   0.2.5
@@ -634,6 +634,75 @@ max_weights &lt;- surveys %&gt;%
 <h2>Export Our Data</h2>
 <pre class="r"><code>write_csv(max_weights, here(&quot;write_data&quot;, &quot;max_weights.csv&quot;))</code></pre>
 <p>Git history is stored locally here. Hit diff/history for more details.</p>
+</div>
+<div id="day-2" class="section level1">
+<h1>Day 2</h1>
+<div id="tidy-data-in-spreadsheets" class="section level2">
+<h2>Tidy Data in Spreadsheets</h2>
+<p>Today we are going to look at tidying data.</p>
+<p>The functions we use for tidying data are:</p>
+<ul>
+<li>tidyr::spread()</li>
+<li>tidyr::gather()</li>
+</ul>
+<p>Note: order of libraries being loaded matters for select, summarize, etc.</p>
+<div id="spread" class="section level3">
+<h3>spread()</h3>
+<p>spread() takes three principle arguments:</p>
+<ol style="list-style-type: decimal">
+<li>the data</li>
+<li>the <em>key</em> column variable will become the new column names</li>
+<li>the value column variable which will fill the new column variables</li>
+</ol>
+<p>We’re going to use the surveys dataset</p>
+<pre class="r"><code>library(tidyverse)
+library(here)
+
+surveys &lt;- read_csv(here(&quot;read_data&quot;, &quot;surveys.csv&quot;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   record_id = col_integer(),
+##   month = col_integer(),
+##   day = col_integer(),
+##   year = col_integer(),
+##   plot_id = col_integer(),
+##   species_id = col_character(),
+##   sex = col_character(),
+##   hindfoot_length = col_integer(),
+##   weight = col_integer()
+## )</code></pre>
+<pre class="r"><code>#create a wide data format of surveys using spread
+
+surveys_gw &lt;- surveys %&gt;%
+  drop_na(weight) %&gt;%
+  group_by(species_id) %&gt;%
+  summarise(mean_weight=mean(weight))
+
+str(surveys_gw)</code></pre>
+<pre><code>## Classes 'tbl_df', 'tbl' and 'data.frame':    25 obs. of  2 variables:
+##  $ species_id : chr  &quot;BA&quot; &quot;DM&quot; &quot;DO&quot; &quot;DS&quot; ...
+##  $ mean_weight: num  8.6 43.2 48.9 120.1 159.2 ...</code></pre>
+<pre class="r"><code>#now we want to spread the dataset out into a wide format
+
+wide_surveys_gw &lt;- surveys_gw %&gt;%
+  spread(key=species_id, value=mean_weight)
+#long format is usually better, group together species for analysis
+
+#now we are going back to long from the wide dataset that we just created</code></pre>
+</div>
+<div id="gather" class="section level3">
+<h3>gather()</h3>
+<p>gather() takes four arugments:</p>
+<ol style="list-style-type: decimal">
+<li>data</li>
+<li>key</li>
+<li>value</li>
+<li>names of columns we use to fill the key variable (or drop)</li>
+</ol>
+<pre class="r"><code>long_surveys &lt;- wide_surveys_gw %&gt;%
+  gather(key=species_id, value=mean_weight)</code></pre>
+</div>
+</div>
 </div>
 
 

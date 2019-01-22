@@ -1,0 +1,17 @@
+# Data Dictionary
+
+hakai_id:
+  * Description: This is the primary key that allows us to join our results to our sample collection metadata
+  * Units: NA
+  
+stock_1:
+  * The name of the genetic stock of sockeye salmon that the CBAYES algorithm estimated for our sample
+  * Units: See README file for description of possible stocks
+  
+prob_1:
+  * The probability that the sample is stock_1
+  * Units: NA
+  
+region_1:
+  * The region that stock_1 is from
+  * See README for possible regions

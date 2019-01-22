@@ -285,7 +285,7 @@ Often you want to convert lists and matrices to data frames or vectors.
 
 \subsection{Data Frames}\label{data-frames}
 
-Next we;re going to look at the structure of Data Frames.
+Next we're going to look at the structure of Data Frames.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1012,6 +1012,121 @@ year, genus, species\_id and weight.
 \end{Shaded}
 
 Git history is stored locally here. Hit diff/history for more details.
+
+\section{Day 2}\label{day-2}
+
+\subsection{Tidy Data in Spreadsheets}\label{tidy-data-in-spreadsheets}
+
+Today we are going to look at tidying data.
+
+The functions we use for tidying data are:
+
+\begin{itemize}
+\tightlist
+\item
+  tidyr::spread()
+\item
+  tidyr::gather()
+\end{itemize}
+
+Note: order of libraries being loaded matters for select, summarize,
+etc.
+
+\subsubsection{spread()}\label{spread}
+
+spread() takes three principle arguments:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the data
+\item
+  the \emph{key} column variable will become the new column names
+\item
+  the value column variable which will fill the new column variables
+\end{enumerate}
+
+We're going to use the surveys dataset
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(here)}
+
+\NormalTok{surveys <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\KeywordTok{here}\NormalTok{(}\StringTok{"read_data"}\NormalTok{, }\StringTok{"surveys.csv"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   record_id = col_integer(),
+##   month = col_integer(),
+##   day = col_integer(),
+##   year = col_integer(),
+##   plot_id = col_integer(),
+##   species_id = col_character(),
+##   sex = col_character(),
+##   hindfoot_length = col_integer(),
+##   weight = col_integer()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create a wide data format of surveys using spread}
+
+\NormalTok{surveys_gw <-}\StringTok{ }\NormalTok{surveys }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{drop_na}\NormalTok{(weight) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(species_id) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{mean_weight=}\KeywordTok{mean}\NormalTok{(weight))}
+
+\KeywordTok{str}\NormalTok{(surveys_gw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Classes 'tbl_df', 'tbl' and 'data.frame':    25 obs. of  2 variables:
+##  $ species_id : chr  "BA" "DM" "DO" "DS" ...
+##  $ mean_weight: num  8.6 43.2 48.9 120.1 159.2 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#now we want to spread the dataset out into a wide format}
+
+\NormalTok{wide_surveys_gw <-}\StringTok{ }\NormalTok{surveys_gw }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(}\DataTypeTok{key=}\NormalTok{species_id, }\DataTypeTok{value=}\NormalTok{mean_weight)}
+\CommentTok{#long format is usually better, group together species for analysis}
+
+\CommentTok{#now we are going back to long from the wide dataset that we just created}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{gather()}\label{gather}
+
+gather() takes four arugments:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  data
+\item
+  key
+\item
+  value
+\item
+  names of columns we use to fill the key variable (or drop)
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{long_surveys <-}\StringTok{ }\NormalTok{wide_surveys_gw }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{gather}\NormalTok{(}\DataTypeTok{key=}\NormalTok{species_id, }\DataTypeTok{value=}\NormalTok{mean_weight)}
+\end{Highlighting}
+\end{Shaded}
 
 
 \end{document}

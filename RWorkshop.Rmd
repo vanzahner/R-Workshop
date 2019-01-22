@@ -3,8 +3,8 @@ title: "R Workshop"
 author: "Vanessa"
 date: '2019-01-21'
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ## Creating Objects in R
@@ -76,7 +76,7 @@ Often you want to convert lists and matrices to data frames or vectors.
 
 ## Data Frames
 
-Next we;re going to look at the structure of Data Frames.
+Next we're going to look at the structure of Data Frames.
 
 ```{r}
 library(tidyverse)
@@ -269,3 +269,79 @@ write_csv(max_weights, here("write_data", "max_weights.csv"))
 ```
 
 Git history is stored locally here. Hit diff/history for more details.
+
+# Day 2
+
+## Tidy Data in Spreadsheets
+
+Today we are going to look at tidying data.
+
+The functions we use for tidying data are:
+
+* tidyr::spread()
+* tidyr::gather()
+
+Note: order of libraries being loaded matters for select, summarize, etc.
+
+### spread()
+
+spread() takes three principle arguments:
+
+1. the data
+2. the _key_ column variable will become the new column names
+3. the value column variable which will fill the new column variables
+
+We're going to use the surveys dataset
+
+```{r}
+library(tidyverse)
+library(here)
+
+surveys <- read_csv(here("read_data", "surveys.csv"))
+
+#create a wide data format of surveys using spread
+
+surveys_gw <- surveys %>%
+  drop_na(weight) %>%
+  group_by(species_id) %>%
+  summarise(mean_weight=mean(weight))
+
+str(surveys_gw)
+
+#now we want to spread the dataset out into a wide format
+
+wide_surveys_gw <- surveys_gw %>%
+  spread(key=species_id, value=mean_weight)
+#long format is usually better, group together species for analysis
+
+#now we are going back to long from the wide dataset that we just created
+```
+
+### gather()
+
+gather() takes four arugments:
+
+1. data
+2. key
+3. value
+4. names of columns we use to fill the key variable (or drop)
+
+```{r}
+long_surveys <- wide_surveys_gw %>%
+  gather(key=species_id, value=mean_weight)
+```
+
+## Sending Tidy Data
+
+### Changelog
+
+* Update your changelog with changes you make to your raw data or other significant changes or additions to your projects!
+
+### Data Dictionary
+
+* Create a data dictionary to define our variables
+
+```{r}
+
+```
+
