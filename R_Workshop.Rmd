@@ -2,7 +2,9 @@
 title: "R Workshop"
 author: "Vanessa"
 date: '2019-01-21'
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ## Creating Objects in R
